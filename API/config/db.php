@@ -2,7 +2,7 @@
 $host = "localhost";
 $db_name = "comweb";
 $username = "root";
-$password = "";
+$password = ""; //pas de password
 
 $conn = mysqli_connect($host, $username, $password, $db_name);
 
