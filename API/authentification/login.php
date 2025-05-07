@@ -1,6 +1,6 @@
 <?php
 /*
-Lire les infos envoyées depuis le site (username + password)
+Lire les infos envoyées depuis le site (id_utilisateur + mdp_utilisateur)
 
 Vérifier si ce compte existe dans bdd
 
@@ -17,32 +17,32 @@ require_once("../outils/reponse.php"); // fonction d'envoi de réponse JSON
 
 $data = json_decode(file_get_contents(filename: "php://input"), true); // lecture  données JSON via méthode POST
 
-// Vérification des champs requis (username et password)
-if (!isset($data['username']) || !isset($data['password'])) 
+// Vérification des champs requis (id_utilisateur et mdp_utilisateur)
+if (!isset($data['id_utilisateur']) || !isset($data['mdp_utilisateur'])) 
 {
     send_json(["error" => "Champs manquants"]); // erreur
 }
 
 // Sécurisation entrée 
-$username = mysqli_real_escape_string($conn, $data['username']);
-$password = $data['password']; 
+$id_utilisateur = mysqli_real_escape_string($conn, $data['id_utilisateur']);
+$mdp_utilisateur = $data['mdp_utilisateur']; 
 
 // requête SQL 
-$sql = "SELECT * FROM users WHERE username = '$username'";
+$sql = "SELECT * FROM utilisateurs WHERE id_utilisateur = '$id_utilisateur'";
 $result = mysqli_query($conn, $sql);
 
 // Si un utilisateur est trouvé
 if ($result && mysqli_num_rows($result) > 0) 
 {
-    $user = mysqli_fetch_assoc($result);
+    $utilisateurs = mysqli_fetch_assoc($result);
 
    
-    if (password_verify($password, $user['password'])) 
+    if (mdp_utilisateur_verify($mdp_utilisateur, $utilisateurs['mdp_utilisateur'])) 
     {  // Vérification mot de passe comparaison avec hash sécurisé)
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['role'] = $user['role'];
+        $_SESSION['utilisateurs_id'] = $utilisateurs['id'];
+        $_SESSION['role'] = $utilisateurs['role'];
 
-        send_json(["success" => true, "role" => $user['role']]);
+        send_json(["success" => true, "role" => $utilisateurs['role']]);
     }
     else 
     {

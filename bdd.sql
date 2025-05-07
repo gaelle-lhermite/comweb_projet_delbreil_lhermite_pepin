@@ -1,9 +1,9 @@
 
 -- Création des tables
 CREATE TABLE utilisateurs (
-    id_utilisateur INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    nom_utilisateur VARCHAR(30) NOT NULL,
-    mdp_utilisateur VARCHAR(30) NOT NULL
+    id_utilisateur VARCHAR(30) NOT NULL PRIMARY KEY,
+    mdp_utilisateur VARCHAR(30) NOT NULL, 
+    role VARCHAR(15) NOT NULL
 );
 
 CREATE TABLE eleves (
@@ -12,6 +12,14 @@ CREATE TABLE eleves (
     prenom_eleve VARCHAR(30),
     classe_eleve VARCHAR(15),
     age_eleve INT,
+    id_utilisateur INT,
+    FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs(id_utilisateur)
+);
+
+CREATE TABLE professeur (
+    id_prof INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nom_prof VARCHAR(30),
+    prenom_prof VARCHAR(30),
     id_utilisateur INT,
     FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs(id_utilisateur)
 );
@@ -32,7 +40,7 @@ CREATE TABLE notes (
 
 -- Insertion des utilisateurs
 INSERT INTO utilisateurs (nom_utilisateur, mdp_utilisateur)
-VALUES ('alice', 'azerty123'), ('bob', 'mdpsecurise');
+VALUES ('alice', 'azerty123','eleve'), ('bob', 'mdpsecurise','eleve');
 
 -- Insertion des élèves
 INSERT INTO eleves (nom_eleve, prenom_eleve, classe_eleve, age_eleve, id_utilisateur)
