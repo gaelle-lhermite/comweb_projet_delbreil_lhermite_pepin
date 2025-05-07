@@ -35,8 +35,8 @@ INSERT INTO utilisateurs (nom_utilisateur, mdp_utilisateur)
 VALUES ('alice', 'azerty123'), ('bob', 'mdpsecurise');
 
 -- Insertion des élèves
-INSERT INTO eleves (nom_eleve, prenom_eleve, classe_eleve, age_eleve)
-VALUES ('Dupont', 'Alice', '5A', 14), ('Martin', 'Bob', '5B', 15);
+INSERT INTO eleves (nom_eleve, prenom_eleve, classe_eleve, age_eleve, id_utilisateur)
+VALUES ('Dupont', 'Alice', '5A', 14, 1), ('Martin', 'Bob', '5B', 15, 2);
 
 -- Insertion des matières
 INSERT INTO matieres (nom_matiere)
