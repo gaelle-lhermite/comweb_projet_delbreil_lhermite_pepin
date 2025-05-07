@@ -3,7 +3,7 @@
 CREATE TABLE utilisateurs (
     id_utilisateur VARCHAR(30) NOT NULL PRIMARY KEY,
     mdp_utilisateur VARCHAR(30) NOT NULL, 
-    role VARCHAR(15) NOT NULL
+    role_utilisateur VARCHAR(15) NOT NULL
 );
 
 CREATE TABLE eleves (
