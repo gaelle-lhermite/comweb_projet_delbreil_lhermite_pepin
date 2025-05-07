@@ -11,7 +11,7 @@ CREATE TABLE eleves (
     nom_eleve VARCHAR(30),
     prenom_eleve VARCHAR(30),
     classe_eleve VARCHAR(15),
-    id_utilisateur INT,
+    id_utilisateur VARCHAR(30),
     FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs(id_utilisateur)
 );
 
@@ -19,7 +19,7 @@ CREATE TABLE professeurs (
     id_prof INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nom_prof VARCHAR(30),
     prenom_prof VARCHAR(30),
-    id_utilisateur INT,
+    id_utilisateur VARCHAR(30),
     FOREIGN KEY (id_utilisateur) REFERENCES utilisateurs(id_utilisateur)
 );
 
