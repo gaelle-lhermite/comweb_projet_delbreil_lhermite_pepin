@@ -45,8 +45,8 @@ VALUES ('Maths'), ('Français'), ('Histoire');
 -- Insertion des notes
 INSERT INTO notes (valeur_note, id_matiere, id_eleve)
 VALUES
-  (15.5, 1, 1),
-  (17.0, 1, 1),
-  (12.0, 2, 1),
-  (13.0, 2, 2),
-  (10.0, 3, 1);
+  (15.50, 1, 1),
+  (17.00, 1, 1),
+  (12.00, 2, 1),
+  (13.00, 2, 2),
+  (10.00, 3, 1);
