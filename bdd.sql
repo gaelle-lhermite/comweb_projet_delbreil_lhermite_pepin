@@ -35,7 +35,8 @@ CREATE TABLE notes (
     id_matiere INT,
     id_eleve INT,
     FOREIGN KEY (id_matiere) REFERENCES matieres(id_matiere),
-    FOREIGN KEY (id_eleve) REFERENCES eleves(id_eleve)
+    FOREIGN KEY (id_eleve) REFERENCES eleves(id_eleve), 
+    FOREIGN KEY (id_prof) REFERENCES professeur(id_prof)
 );
 
 -- Insertion des utilisateurs
