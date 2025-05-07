@@ -40,7 +40,7 @@ CREATE TABLE notes (
 );
 
 -- Insertion des utilisateurs
-INSERT INTO utilisateurs (nom_utilisateur, mdp_utilisateur, role_utilisateur)
+INSERT INTO utilisateurs (id_utilisateur, mdp_utilisateur, role_utilisateur)
 VALUES ('ldelbreil', 'azerty123','eleve'), ('lopepin', 'mdpsecurise','eleve');
 
 -- Insertion des élèves
