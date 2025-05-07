@@ -23,7 +23,7 @@ CREATE TABLE matieres (
 
 CREATE TABLE notes (
     id_note INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    valeur_note DECIMAL(2,2),
+    valeur_note DECIMAL(4,2),
     id_matiere INT,
     id_eleve INT,
     FOREIGN KEY (id_matiere) REFERENCES matieres(id_matiere),
