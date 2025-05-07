@@ -33,13 +33,14 @@ CREATE TABLE notes (
     valeur_note DECIMAL(4,2),
     id_matiere INT,
     id_eleve INT,
+    id_prof INT, 
     FOREIGN KEY (id_matiere) REFERENCES matieres(id_matiere),
     FOREIGN KEY (id_eleve) REFERENCES eleves(id_eleve), 
     FOREIGN KEY (id_prof) REFERENCES professeurs(id_prof)
 );
 
 -- Insertion des utilisateurs
-INSERT INTO utilisateurs (nom_utilisateur, mdp_utilisateur)
+INSERT INTO utilisateurs (nom_utilisateur, mdp_utilisateur, role_utilisateur)
 VALUES ('ldelbreil', 'azerty123','eleve'), ('lopepin', 'mdpsecurise','eleve');
 
 -- Insertion des élèves
