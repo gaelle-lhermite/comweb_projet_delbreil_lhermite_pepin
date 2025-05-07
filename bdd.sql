@@ -44,7 +44,7 @@ INSERT INTO utilisateurs (id_utilisateur, mdp_utilisateur, role_utilisateur)
 VALUES ('ldelbreil', 'azerty123','eleve'), ('lopepin', 'mdpsecurise','eleve');
 
 -- Insertion des élèves
-INSERT INTO eleves (nom_eleve, prenom_eleve, classe_eleve, age_eleve, id_utilisateur)
+INSERT INTO eleves (nom_eleve, prenom_eleve, classe_eleve, id_utilisateur)
 VALUES ('Delbreil', 'Laura', '1A', 'ldelbreil'), ('Pepin', 'Lou', '1A', 'lopepin');
 
 -- Insertion des professeurs
