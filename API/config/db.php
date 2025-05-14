@@ -2,15 +2,11 @@
 $host = "localhost";
 $db_name = "projet_comweb";
 $username = "root";
-$password = ""; //pas de password
+$password = ""; // pas de mot de passe local
 
 $conn = mysqli_connect($host, $username, $password, $db_name);
 
-
 if (!$conn) {
-    echo (["error" => "Erreur de connexion à la base de données"]);
-    exit();
+    die(json_encode(["error" => "Erreur de connexion à la base de données"]));
 }
-else{
-    echo "blablabla";
-}
+?>
