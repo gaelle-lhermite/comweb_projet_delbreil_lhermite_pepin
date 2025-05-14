@@ -1,0 +1,9 @@
+Objectif de l' API :
+
+1-Un élève écrit son identifiant et son mot de passe dans un site (React).
+
+2- Le code vérifie si c’est bon dans la BDD
+
+3- Si c’est bon == "ok t’es connecté" et enregistrement identifiant pour plus tard.
+
+Comment: en PHP + il répond avec un petit texte en JSON.
