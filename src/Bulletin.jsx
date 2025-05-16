@@ -1,6 +1,19 @@
-import React from 'react';
+///
+// COMPOSANT BULLETIN : afficher un relevé de notes scolaire d'un étudiant sous forme de tableau 
+
+// Actuellement : données statiques  
+// Objectif de développement :  relier le tout à notre base de donnée et notre API
+///
+
+import React from 'react'; // Récupération de la bibliothèque React
+
+///
+// DÉFINITION DU COMPOSANT BULLETIN 
+///
 
 const Bulletin = () => {
+
+  // Déclaration d’un tableau contenant les noms, notes et appréciation d'un élève (factices)
   const notes = [
     { matiere: 'Mathématiques', note: '16', appreciation: 'Bon travail' },
     { matiere: 'Français', note: '13.5', appreciation: 'Doit participer davantage' },
@@ -9,6 +22,7 @@ const Bulletin = () => {
     { matiere: 'Histoire', note: '14', appreciation: 'Bonne compréhension' },
   ];
 
+  // Mise en page et affichage à l'écran d'une div contenant un tableau html présentant toutes les informations contenues dans le tableau précédent
   return (
     <div style={styles.container}>
       <div style={styles.bulletin}>
@@ -35,6 +49,10 @@ const Bulletin = () => {
     </div>
   );
 };
+
+///
+// STYLE DU COMPOSANT BULLETIN 
+///
 
 const styles = {
   container: {

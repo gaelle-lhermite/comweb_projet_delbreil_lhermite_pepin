@@ -1,27 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+///
+// COMPOSANT LOGIN : Ce composant permet aux utilisateurs (professeurs et élèves) de s'identifier via un formulaire (identifiant, mot de passe, rôle).
+// D'envoyer des données à un backend php (API REST) et d'envoyer (après analyse de ces données) l'utilisateur sur une page d'accueil spécifique et personnalisée.
+///
 
-function Login() {
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-  const [erreur, setErreur] = useState('');
-  const [profil, setProfil] = useState(''); // Valeur par défaut
-  const navigate = useNavigate();
+import React, { useEffect, useState } from 'react';// Récupération de la bibliothèque React et des hook utilisés dans le composant
+import { useNavigate } from 'react-router-dom'; // Hook permettant la navigation entre les pages
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+///
+// DÉFINITION DU COMPOSANT LOGIN 
+///
 
-    // Vérification côté frontend
+function Login() { // Déclaration du composant
+  const [login, setLogin] = useState(''); //stockage des informations données par l’utilisateur
+  const [password, setPassword] = useState(''); //stockage des informations données par l’utilisateur
+  const [erreur, setErreur] = useState(''); // message d'erreur affiché si la saisie ou la connexion échoue
+  const [profil, setProfil] = useState(''); // valeur sélectionnée dans la liste déroulante (étudiant ou professeur)
+  const navigate = useNavigate(); // permet la redirection vers une autre page
+
+  // fonction de connexion
+  const handleSubmit = async (e) => { // fonction appelée au moment de l'envoie du formulaire par l'utilisateur
+    e.preventDefault(); // empêche le rechargement de la page au moment de l'envoi
+
+    // boucle qui vérifie que tous les champs sont remplis et si ce n'est pas le cas envoie un message d'erreur et arrête la fonction
     if (!login || !password) {
       setErreur("Saisie incorrecte.");
       return;
     }
 
+    // objet contenant les informations envoyées à l'API pour l'authentification
     const payload = {
       id_utilisateur: login,
       mdp_utilisateur: password,
     };
 
+    //Appel asynchrone à l’API avec une requête POST / URL dépendant du rôle choisis : étudiant ou professeur
+    // + Envoi des données et lecture de la réponse JSON
     try {
       const response = await fetch("http://localhost:8888/comweb_projet/API/authentification/login.php", {
         method: "POST",
@@ -33,42 +46,45 @@ function Login() {
 
       const data = await response.json();
 
+      // boucle permettant de vérifier si le serveur à renvoyer une erreur HTTP ou une erreur côté PHP et d'afficher un message d'erreur en conséquence
       if (!response.ok) {
         setErreur(data.error || "Erreur inconnue.");
         return;
       }
 
+      // Si la connexion réussi, on stocke les données de l'utilisateur dans localStorage pour les utiliser plus tard et ailleurs
       if (data.success) {
-        // Stocke TOUTE la réponse utile
         localStorage.setItem("user", JSON.stringify({
         id_utilisateur: data.id_utilisateur,
         role: data.role,
       }));
 
-      // Redirection selon rôle choisi (ou réponse du backend si tu préfères)
+      // Redirection de l'utilisateur selon le rôle choisi
       if (data.role === 'eleve') {
-      navigate('/DashboardEtudiant');
+      navigate('/DashboardEtudiant'); // si élève alors interface élève
     } else if (data.role === 'professeur') {
-      navigate('/DashboardProfesseur');
+      navigate('/DashboardProfesseur'); // si professeur alors interface professeur
     } else {
-      setErreur("Rôle inconnu : " + data.role);
+      setErreur("Rôle inconnu : " + data.role); // message d'erreur 
     }
 }
+    // affichage d'un message d'erreur en cas d'erreur réseau
     } catch (error) {
       console.error("Erreur de connexion au serveur :", error);
       setErreur("Erreur de connexion au serveur.");
     }
   };
 
+  // Mise en page et affichage de l'interface utilisateur
   return (
-    <div style={styles.container}>
-      <form onSubmit={handleSubmit} style={styles.form}>
+    <div style={styles.container}> {/* Div principale contenant toute la structure du dashboard*/}
+      <form onSubmit={handleSubmit} style={styles.form}> {/* utilisation de handleSubmit à la soumission*/}
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <img src="/logo.png" alt="Logo" style={{ width: '100px' }} />
+          <img src="/logo.png" alt="Logo" style={{ width: '100px' }} /> {/* ajout du logo */}
         </div>
         <h2 style={{ textAlign: 'center' }}>Connexion</h2>
 
-        <select
+        <select // liste déroulante pour choisir le rôle entre étudiant et professeur
           value={profil}
           onChange={(e) => setProfil(e.target.value)}
           style={styles.input}
@@ -77,28 +93,32 @@ function Login() {
           <option value="professeur">Professeur</option>
         </select>
 
-        <input
+        <input // champ texte pour que l'utilisateur entre son identifiant
           type="text"
           placeholder="Identifiant"
           value={login}
-          onChange={(e) => setLogin(e.target.value)}
+          onChange={(e) => setLogin(e.target.value)} // mise à jour du rôle
           style={styles.input}
         />
-        <input
+        <input // champ texte pour que l'utilisateur entre son mot de passe
           type="password"
           placeholder="Mot de passe"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           style={styles.input}
         />
-        <button type="submit" style={styles.button}>
+        <button type="submit" style={styles.button}> {/* Bouton d'envoi du formulaire */}
           Se connecter
         </button>
-        {erreur && <p style={{ color: 'red', textAlign: 'center' }}>{erreur}</p>}
+        {erreur && <p style={{ color: 'red', textAlign: 'center' }}>{erreur}</p>} {/* Message d'erreur */}
       </form>
     </div>
   );
 }
+
+///
+// STYLE DU COMPOSANT LOGIN 
+///
 
 const styles = {
   container: {

@@ -1,36 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+///
+// COMPOSANT DASHBOARDETUDIANT : Ce composant représente le tableau de bord d’un étudiant, il y accède après connexion
+// Il récupère l’utilisateur depuis le localStorage et personnalise le contenu en fonction de ses données
 
-const daysInMonth = 31;
-const currentDay = new Date().getDate();
+// Actuellement il permet d'afficher : un message de bienvenu personnalisé, un calendrier du mois en cours, un aperçu des dernières notes, des informations pratiques, un accés au bulletin de l'élève
+// Objectif de développement : relier l'aperçu des dernières notes à notre base de donnée, coordonner le calendrier avec la date actuelle et améliorer l'aspect et les fonctionnalités de la page
+///
+
+import React, { useEffect, useState } from 'react'; // Récupération de la bibliothèque React et des hook utilisés dans le composant
+import { useNavigate } from 'react-router-dom'; // Hook permettant la navigation entre les pages
+
+// constantes nécessaires à l'affichage du calendrier (ici, uniquement pour le mois de mai)
+const daysInMonth = 31; // nombre de jours dans le mois
+const currentDay = new Date().getDate(); // récupération de la date actuelle
+
+///
+// DÉFINITION DU COMPOSANT DASHBOARD ÉTUDIANT 
+///
 
 const DashboardEtudiant = () => {
-  const navigate = useNavigate();
-  const [eleve, setEtudiant] = useState(null);
+  const navigate = useNavigate(); // Hook permettant le changement de page
+  const [eleve, setEtudiant] = useState(null); // création d'un état React permettant de stocker les informations de l'élève 
+
 
   useEffect(() => {
-    const utilisateurString = localStorage.getItem("user");
+    const utilisateurString = localStorage.getItem("user"); // Récupère l'étudiant dans le localStorage au chargement du composant 
+
     if (utilisateurString) {
       try {
-        const userObj = JSON.parse(utilisateurString);
-        setEtudiant(userObj);
+        const userObj = JSON.parse(utilisateurString); // transforme le JSON en objet JS
+        setEtudiant(userObj); // mise à jour de l'état
       } catch (e) {
         console.error("Erreur de parsing JSON :", e);
       }
     }
-  }, []);
+  }, []); // Ne s'exécute qu'une seule fois
 
-  if (!eleve) {
-    return <p>Chargement...</p>;
-  }
-
+  // Mise en page et affichage de l'interface
   return (
-    <div style={styles.container}>
-      <div style={styles.dashboard}>
-        <h2 style={styles.title}>Bonjour : {eleve.id_utilisateur || "utilisateur"}</h2>
+    <div style={styles.container}>  {/* Div principale contenant toute la structure du dashboard*/}
+      <div style={styles.dashboard}> {/* Div principale contenant toute la structure du dashboard*/}
+        <h2 style={styles.title}>Bonjour : {eleve.id_utilisateur || "utilisateur"}</h2> {/* Message d'accueil personnalisé avec l'ID utilisateur */}
 
         <div style={styles.grid}>
-          <div style={styles.card}>
+          <div style={styles.card}> {/* Div permettant l'affichage du calendrier */}
             <h3>Calendrier – Mai 2025</h3>
             <div style={styles.calendar}>
               {[...Array(daysInMonth)].map((_, i) => {
@@ -53,10 +65,10 @@ const DashboardEtudiant = () => {
             </div>
           </div>
 
-          <div style={styles.card}>
+          <div style={styles.card}> {/* Div permettant l'affichage des notes récentes, pas de notes car pas relié à l'API */}
             <h3>Dernières notes</h3>
             <ul style={{ padding: 0, listStyle: 'none' }}>
-              {(eleve.notes || []).map((n, index) => (
+              {(eleve.notes || []).map((n, index) => ( // permet de générer une ligne par élève
                 <li key={index} style={{ marginBottom: '0.5rem' }}>
                   <strong>{n.matiere} :</strong> {n.note}
                 </li>
@@ -68,7 +80,7 @@ const DashboardEtudiant = () => {
             </button>
           </div>
 
-          <div style={styles.card}>
+          <div style={styles.card}> {/* Div permettant l'affichage des infos pratiques (factices) */}
             <h3>Informations diverses</h3>
             <p>📌 Prochain contrôle : Mathématiques - 22 mai</p>
             <p>📎 Réunion parents/prof : 28 mai</p>
@@ -79,7 +91,10 @@ const DashboardEtudiant = () => {
   );
 };
 
-// ✅ Déplacer le style ici
+///
+// STYLE DU COMPOSANT DASHBOARD ÉTUDIANT 
+///
+
 const styles = {
   container: {
     height: '100vh',
