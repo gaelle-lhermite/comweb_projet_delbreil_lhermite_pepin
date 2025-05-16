@@ -39,18 +39,20 @@ function Login() {
       }
 
       if (data.success) {
-        // Tu peux stocker les infos en localStorage si besoin
-        localStorage.setItem("user", JSON.stringify(data));
+        // Stocke TOUTE la réponse utile
+        localStorage.setItem("user", JSON.stringify({
+        id_utilisateur: data.id_utilisateur,
+        role: data.role,
+      }));
 
-        // Rediriger selon le rôle choisi dans le sélecteur
-        if (profil === 'eleve') {
-          navigate('/DashboardEtudiant');
-        } else {
-          navigate('/DashboardProfesseur');
-        }
+      // Redirection selon rôle choisi (ou réponse du backend si tu préfères)
+      if (profil == 'etudiant') {
+        navigate('/DashboardEtudiant');
       } else {
-        setErreur(data.error || "Échec de la connexion.");
+        navigate('/DashboardProfesseur');
       }
+    }
+
     } catch (error) {
       console.error("Erreur de connexion au serveur :", error);
       setErreur("Erreur de connexion au serveur.");
@@ -70,7 +72,7 @@ function Login() {
           onChange={(e) => setProfil(e.target.value)}
           style={styles.input}
         >
-          <option value="eleve">Étudiant</option>
+          <option value="etudiant">Étudiant</option>
           <option value="professeur">Professeur</option>
         </select>
 

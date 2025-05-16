@@ -48,14 +48,14 @@ try {
 $id = $data['id_utilisateur'];
 $mdp = $data['mdp_utilisateur'];
 
-$stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE id_utilisateur = ? AND mdp_utilisateur = ?");
+$stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE pseudo_utilisateur = ? AND mdp_utilisateur = ?");
 $stmt->execute([$id, $mdp]);
 
 if ($stmt->rowCount() === 1) {
     $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
     echo json_encode([
         "success" => true,
-        "id_utilisateur" => $utilisateur['id_utilisateur'],
+        "id_utilisateur" => $utilisateur['pseudo_utilisateur'],
         "role" => $utilisateur['role_utilisateur']
     ]);
 } else {

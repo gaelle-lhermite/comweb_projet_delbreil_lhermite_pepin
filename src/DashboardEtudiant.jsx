@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const daysInMonth = 31;
@@ -6,20 +6,28 @@ const currentDay = new Date().getDate();
 
 const DashboardEtudiant = () => {
   const navigate = useNavigate();
-  const utilisateur = {
-    prenom: 'Alice',
-    nom: 'Durand',
-    notes: [
-      { matiere: 'Histoire', note: '15/20' },
-      { matiere: 'SVT', note: '14.5/20' },
-      { matiere: 'Anglais', note: '17/20' },
-    ],
-  };
+  const [etudiant, setEtudiant] = useState(null);
+
+  useEffect(() => {
+    const utilisateurString = localStorage.getItem("user");
+    if (utilisateurString) {
+      try {
+        const userObj = JSON.parse(utilisateurString);
+        setEtudiant(userObj);
+      } catch (e) {
+        console.error("Erreur de parsing JSON :", e);
+      }
+    }
+  }, []);
+
+  if (!etudiant) {
+    return <p>Chargement...</p>;
+  }
 
   return (
     <div style={styles.container}>
       <div style={styles.dashboard}>
-        <h2 style={styles.title}>Bienvenue, {utilisateur.prenom} {utilisateur.nom}</h2>
+        <h2 style={styles.title}>Bonjour : {etudiant.id_utilisateur || "utilisateur"}</h2>
 
         <div style={styles.grid}>
           <div style={styles.card}>
@@ -48,11 +56,12 @@ const DashboardEtudiant = () => {
           <div style={styles.card}>
             <h3>Dernières notes</h3>
             <ul style={{ padding: 0, listStyle: 'none' }}>
-              {utilisateur.notes.map((n, index) => (
+              {(etudiant.notes || []).map((n, index) => (
                 <li key={index} style={{ marginBottom: '0.5rem' }}>
                   <strong>{n.matiere} :</strong> {n.note}
                 </li>
               ))}
+              {(etudiant.notes || []).length === 0 && <li>Aucune note disponible</li>}
             </ul>
             <button style={styles.button} onClick={() => navigate('/bulletin')}>
               Voir le relevé de notes
@@ -70,6 +79,7 @@ const DashboardEtudiant = () => {
   );
 };
 
+// ✅ Déplacer le style ici
 const styles = {
   container: {
     height: '100vh',
@@ -81,7 +91,7 @@ const styles = {
   },
   dashboard: {
     width: '100%',
-    maxWidth: '1300px', // max largeur centrale
+    maxWidth: '1300px',
   },
   title: {
     marginBottom: '2rem',
@@ -96,7 +106,7 @@ const styles = {
   },
   card: {
     background: 'white',
-    flex: '1 1 30%', 
+    flex: '1 1 30%',
     padding: '1.5rem',
     borderRadius: '8px',
     boxShadow: '0 0 8px rgba(0,0,0,0.1)',
