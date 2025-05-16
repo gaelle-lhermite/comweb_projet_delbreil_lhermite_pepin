@@ -5,7 +5,7 @@ function Login() {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [erreur, setErreur] = useState('');
-  const [profil, setProfil] = useState('etudiant'); // Valeur par défaut
+  const [profil, setProfil] = useState(''); // Valeur par défaut
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -13,7 +13,7 @@ function Login() {
 
     // Vérification côté frontend
     if (!login || !password) {
-      setErreur("Veuillez remplir tous les champs.");
+      setErreur("Saisie incorrecte.");
       return;
     }
 
@@ -46,13 +46,14 @@ function Login() {
       }));
 
       // Redirection selon rôle choisi (ou réponse du backend si tu préfères)
-      if (profil == 'etudiant') {
-        navigate('/DashboardEtudiant');
-      } else {
-        navigate('/DashboardProfesseur');
-      }
+      if (data.role === 'eleve') {
+      navigate('/DashboardEtudiant');
+    } else if (data.role === 'professeur') {
+      navigate('/DashboardProfesseur');
+    } else {
+      setErreur("Rôle inconnu : " + data.role);
     }
-
+}
     } catch (error) {
       console.error("Erreur de connexion au serveur :", error);
       setErreur("Erreur de connexion au serveur.");
@@ -72,7 +73,7 @@ function Login() {
           onChange={(e) => setProfil(e.target.value)}
           style={styles.input}
         >
-          <option value="etudiant">Étudiant</option>
+          <option value="eleve">Étudiant</option>
           <option value="professeur">Professeur</option>
         </select>
 

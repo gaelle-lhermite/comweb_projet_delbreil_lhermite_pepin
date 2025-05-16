@@ -1,20 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const DashboardProfesseur = () => {
-  // Simuler des données (à remplacer plus tard par une API)
-  const professeur = {
-    prenom: 'Jean',
-    nom: 'Martin',
-    eleves: [
-      { nom: 'Alice', note: 15 },
-      { nom: 'Bob', note: 13 },
-    ],
-  };
+  const [professeur, setProfesseur] = useState(null);
+
+  useEffect(() => {
+    const utilisateurString = localStorage.getItem("user");
+    if (utilisateurString) {
+      try {
+        const userObj = JSON.parse(utilisateurString);
+        setProfesseur(userObj);
+      } catch (e) {
+        console.error("Erreur de parsing JSON :", e);
+      }
+    }
+  }, []);
+
+  // Exemple statique des élèves (à remplacer par un fetch plus tard)
+  const eleves = [
+    { nom: 'Alice', note: 15 },
+    { nom: 'Bob', note: 13 },
+  ];
+
+  if (!professeur) {
+    return <p>Chargement...</p>;
+  }
 
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2 style={styles.title}> {professeur.prenom} {professeur.nom}</h2>
+        <h2 style={styles.title}>Bonjour professeur : {professeur.id_utilisateur}</h2>
         <p style={styles.subtitle}>Voici les notes de vos élèves :</p>
         <table style={styles.table}>
           <thead>
@@ -24,7 +39,7 @@ const DashboardProfesseur = () => {
             </tr>
           </thead>
           <tbody>
-            {professeur.eleves.map((eleve, index) => (
+            {eleves.map((eleve, index) => (
               <tr key={index}>
                 <td>{eleve.nom}</td>
                 <td>{eleve.note}</td>

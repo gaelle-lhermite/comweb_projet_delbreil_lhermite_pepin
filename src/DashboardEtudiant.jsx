@@ -6,7 +6,7 @@ const currentDay = new Date().getDate();
 
 const DashboardEtudiant = () => {
   const navigate = useNavigate();
-  const [etudiant, setEtudiant] = useState(null);
+  const [eleve, setEtudiant] = useState(null);
 
   useEffect(() => {
     const utilisateurString = localStorage.getItem("user");
@@ -20,14 +20,14 @@ const DashboardEtudiant = () => {
     }
   }, []);
 
-  if (!etudiant) {
+  if (!eleve) {
     return <p>Chargement...</p>;
   }
 
   return (
     <div style={styles.container}>
       <div style={styles.dashboard}>
-        <h2 style={styles.title}>Bonjour : {etudiant.id_utilisateur || "utilisateur"}</h2>
+        <h2 style={styles.title}>Bonjour : {eleve.id_utilisateur || "utilisateur"}</h2>
 
         <div style={styles.grid}>
           <div style={styles.card}>
@@ -56,12 +56,12 @@ const DashboardEtudiant = () => {
           <div style={styles.card}>
             <h3>Dernières notes</h3>
             <ul style={{ padding: 0, listStyle: 'none' }}>
-              {(etudiant.notes || []).map((n, index) => (
+              {(eleve.notes || []).map((n, index) => (
                 <li key={index} style={{ marginBottom: '0.5rem' }}>
                   <strong>{n.matiere} :</strong> {n.note}
                 </li>
               ))}
-              {(etudiant.notes || []).length === 0 && <li>Aucune note disponible</li>}
+              {(eleve.notes || []).length === 0 && <li>Aucune note disponible</li>}
             </ul>
             <button style={styles.button} onClick={() => navigate('/bulletin')}>
               Voir le relevé de notes
