@@ -1,11 +1,11 @@
 <?php
 header('Content-Type: application/json');
 require_once('../config/db.php');
-require_once('../authentification/auth.php');
+require_once('auth.php');
 
-requireRole('eleve');
+//requireRole('eleve');
 
-$eleve_user_id = getUserId(); // Ex: 'ldelbreil'
+//$eleve_user_id = getUserId(); // Ex: 'ldelbreil'
 
 // Requête avec sous-requête pour récupérer l'id_eleve à partir de l'identifiant utilisateur
 $sql = "SELECT 

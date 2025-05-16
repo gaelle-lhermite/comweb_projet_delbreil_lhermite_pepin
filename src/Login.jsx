@@ -1,25 +1,59 @@
-import React, { useState } from 'react';  
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+function Login() {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const [profil, setProfil] = useState('etudiant'); // valeur par défaut
+  const [erreur, setErreur] = useState('');
+  const [profil, setProfil] = useState('etudiant'); // Valeur par défaut
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // ne pas recharger la page
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    // vérification des données
+    // Vérification côté frontend
+    if (!login || !password) {
+      setErreur("Veuillez remplir tous les champs.");
+      return;
+    }
 
-    if (login && password) {
-      if (profil === 'etudiant') {
-        navigate('/dashboard/etudiant');
-      } else if (profil === 'professeur') {
-        navigate('/dashboard/professeur');
+    const payload = {
+      id_utilisateur: login,
+      mdp_utilisateur: password,
+    };
+
+    try {
+      const response = await fetch("http://localhost:8888/comweb_projet/API/authentification/login.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErreur(data.error || "Erreur inconnue.");
+        return;
       }
-    } else {
-      alert('Veuillez remplir tous les champs.');
+
+      if (data.success) {
+        // Tu peux stocker les infos en localStorage si besoin
+        localStorage.setItem("user", JSON.stringify(data));
+
+        // Rediriger selon le rôle choisi dans le sélecteur
+        if (profil === 'eleve') {
+          navigate('/DashboardEtudiant');
+        } else {
+          navigate('/DashboardProfesseur');
+        }
+      } else {
+        setErreur(data.error || "Échec de la connexion.");
+      }
+    } catch (error) {
+      console.error("Erreur de connexion au serveur :", error);
+      setErreur("Erreur de connexion au serveur.");
     }
   };
 
@@ -36,7 +70,7 @@ const Login = () => {
           onChange={(e) => setProfil(e.target.value)}
           style={styles.input}
         >
-          <option value="etudiant">Étudiant</option>
+          <option value="eleve">Étudiant</option>
           <option value="professeur">Professeur</option>
         </select>
 
@@ -57,10 +91,11 @@ const Login = () => {
         <button type="submit" style={styles.button}>
           Se connecter
         </button>
+        {erreur && <p style={{ color: 'red', textAlign: 'center' }}>{erreur}</p>}
       </form>
     </div>
   );
-};
+}
 
 const styles = {
   container: {

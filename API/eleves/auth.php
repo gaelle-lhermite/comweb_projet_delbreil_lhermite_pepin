@@ -1,6 +1,5 @@
 <?php
-session_start();
-
+/*
 function getUserId() {
     return $_SESSION['id_utilisateur'] ?? null;
 }
@@ -12,3 +11,4 @@ function requireRole($role) {
         exit;
     }
 }
+*/

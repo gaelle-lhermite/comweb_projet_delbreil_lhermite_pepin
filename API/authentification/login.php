@@ -1,35 +1,74 @@
 <?php
-session_start(); 
-require_once("../config/db.php");
-require_once("../outils/reponse.php");
+// =======================
+// CONFIGURATION DES EN-TÊTES
+// =======================
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Content-Type: application/json");
 
-$data = json_decode(file_get_contents("php://input"), true);
-
-// Vérification des champs requis
-if (!isset($data['id_utilisateur']) || !isset($data['mdp_utilisateur'])) {
-    send_json(["error" => "Champs manquants"]);
+// OPTIONS → réponse immédiate (prévol CORS)
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
 }
 
-// Sécurisation
-$id_utilisateur = mysqli_real_escape_string($conn, $data['id_utilisateur']);
-$mdp_utilisateur = $data['mdp_utilisateur'];
+// =======================
+// LECTURE DU CORPS JSON
+// =======================
+$input = file_get_contents("php://input");
+$data = json_decode($input, true);
 
-// Requête
-$sql = "SELECT * FROM utilisateurs WHERE id_utilisateur = '$id_utilisateur'";
-$result = mysqli_query($conn, $sql);
+// DEBUG (optionnel) : voir ce que PHP reçoit
+// file_put_contents("debug.txt", $input); // utile si tu veux loguer le corps
 
-if ($result && mysqli_num_rows($result) > 0) {
-    $utilisateur = mysqli_fetch_assoc($result);
+if (!is_array($data) || !isset($data['id_utilisateur']) || !isset($data['mdp_utilisateur'])) {
+    echo json_encode(["error" => "Champs manquants"]);
+    exit;
+}
 
-    // Vérification mot de passe (en clair ici)
-    if ($mdp_utilisateur === $utilisateur['mdp_utilisateur']) {
-        $_SESSION['id_utilisateur'] = $utilisateur['id_utilisateur'];
-        $_SESSION['role_utilisateur'] = $utilisateur['role_utilisateur'];
+// =======================
+// CONNEXION À LA BDD
+// =======================
+try {
+    $pdo = new PDO(
+        "mysql:host=localhost;port=8889;dbname=comweb;charset=utf8",
+        "root",
+        "root" // ou "" si tu as changé les identifiants MAMP
+    );
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo json_encode(["error" => "Connexion BDD échouée : " . $e->getMessage()]);
+    exit;
+}
 
-        send_json(["success" => true, "role" => $utilisateur['role_utilisateur']]);
-    } else {
-        send_json(["error" => "Mot de passe incorrect"]);
-    }
+// =======================
+// VÉRIFICATION UTILISATEUR
+// =======================
+$id = $data['id_utilisateur'];
+$mdp = $data['mdp_utilisateur'];
+
+$stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE id_utilisateur = ? AND mdp_utilisateur = ?");
+$stmt->execute([$id, $mdp]);
+
+if ($stmt->rowCount() === 1) {
+    $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
+    echo json_encode([
+        "success" => true,
+        "id_utilisateur" => $utilisateur['id_utilisateur'],
+        "role" => $utilisateur['role_utilisateur']
+    ]);
 } else {
-    send_json(["error" => "Utilisateur non trouvé"]);
+    echo json_encode(["error" => "Identifiants incorrects"]);
+}
+
+$input = file_get_contents("php://input");
+$data = json_decode($input, true);
+
+// DEBUG : afficher ce que PHP reçoit
+file_put_contents("debug.txt", $input); // Crée un fichier debug.txt dans le même dossier
+
+if (!is_array($data)) {
+    echo json_encode(["error" => "JSON invalide", "debug" => $input]);
+    exit;
 }
