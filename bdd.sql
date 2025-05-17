@@ -1,3 +1,11 @@
+------------------------------------------------- 
+--BASE DE DONNEES EXPORTEES DEPUIS PHP MY ADMIN--
+------------------------------------------------- 
+---Commentaires téléchargés automatiquement lors-
+------------de l'exportation de la BDD----------- 
+------------------------------------------------- 
+
+
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
