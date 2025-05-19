@@ -19,7 +19,7 @@ const currentDay = new Date().getDate(); // récupération de la date actuelle
 
 const DashboardEtudiant = () => {
   const navigate = useNavigate(); // Hook permettant le changement de page
-  const [eleve, setEtudiant] = useState(null); // création d'un état React permettant de stocker les informations de l'élève 
+  const [eleve, setEtudiant] = useState(''); // création d'un état React permettant de stocker les informations de l'élève 
 
 
   useEffect(() => {
