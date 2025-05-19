@@ -1,11 +1,17 @@
 <?php
-$host = "localhost";
-$db_name = "projet_comweb";
-$username = "root";
-$password = ""; // pas de mot de passe local
+///
+// SCRIPT PHP : Gestion de la connexion à la base de données
+///
 
-$conn = mysqli_connect($host, $username, $password, $db_name);
+$host = 'localhost';
+$dbname = 'glhermite';     // Nom de la base sur phpMyAdmin
+$user = 'glhermite';         // Identifiant Bordeaux INP
+$password = 'GaeTrqlmonn?';     // Mdp de la partie PHP
 
+$conn = mysqli_connect($host, $user, $password, $dbname, 3306); //Connexion à la BDD
+
+
+//Si la connexion est un échec, message d'erreur. 
 if (!$conn) {
     die(json_encode(["error" => "Erreur de connexion à la base de données"]));
 }
