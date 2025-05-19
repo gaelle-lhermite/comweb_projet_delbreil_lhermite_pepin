@@ -22,17 +22,17 @@ $data = json_decode($input, true); // Transformation en tableau associatif PHP
 
 // Vérification que les champs nécessaires sont présents -> sinon erreur "Champs manquants" s'affiche
 
-if (!is_array($data) || !isset($data['id_utilisateur']) || !isset($data['mdp_utilisateur'])) {
+/*if (!is_array($data) || !isset($data['id_utilisateur']) || !isset($data['mdp_utilisateur'])) {
     echo json_encode(["error" => "Champs manquants"]);
     exit;
-}
+}*/
 
 ///
 // CONNEXION A LA BASE DE DONNEES
 ///
 try {
     $pdo = new PDO(
-        "mysql:host=localhost;dbname=glhermite;charset=utf8",
+        "mysql:host=localhost:3306;dbname=glhermite;charset=utf8mb4",
         "glhermite",
         "GaeTrqlmonn?" 
     );

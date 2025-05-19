@@ -36,7 +36,7 @@ function Login() { // Déclaration du composant
     //Appel asynchrone à l’API avec une requête POST / URL dépendant du rôle choisis : étudiant ou professeur
     // + Envoi des données et lecture de la réponse JSON
     try {
-      const response = await fetch("http://localhost:8888/comweb_projet/API/authentification/login.php", {
+      const response = await fetch("https://glhermite.zzz.bordeaux-inp.fr/API/authentification/login.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
