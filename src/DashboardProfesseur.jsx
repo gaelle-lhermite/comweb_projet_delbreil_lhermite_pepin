@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom'; // Hook permettant la navigation
 ///
 
 const DashboardProfesseur = () => {
-  const [professeur, setProfesseur] = useState(null); // création d'un état React permettant de stocker les informations du professeur
+  const [professeur, setProfesseur] = useState(''); // création d'un état React permettant de stocker les informations du professeur
 
   useEffect(() => {
     const utilisateurString = localStorage.getItem("user"); // Récupère le professeur dans le localStorage au chargement du composant
